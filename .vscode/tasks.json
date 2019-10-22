@@ -4,7 +4,7 @@
         {
             "label": "compile",
             "type": "shell",
-            "command": "g++ src/*.cpp -o roguetest -Iinclude -L. -ltcod -Wl,-rpath=. -Wall",
+            "command": "g++ src/*.cpp -o roguetest -g -Iinclude -L. -ltcod -Wl,-rpath=. -Wall",
             "options": {
                 "cwd": "${workspaceRoot}"
             },
