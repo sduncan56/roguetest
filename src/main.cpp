@@ -1,13 +1,22 @@
 #include "libtcod/libtcod.hpp"
+#include "CaveGenerator.h"
+#include "Cave.h"
+
+
 int main()
 {
     int playerx=40, playery=25;
 
-    TCODConsole::initRoot(80,50,"libtcod test", false);
+    TCODConsole::initRoot(80,55,"libtcod test", false);
+
+
+    CaveGenerator caveGen = CaveGenerator();
+    Cave cave = caveGen.Generate(50, 50);
+
     while(!TCODConsole::isWindowClosed())
     {
 
-        TCOD_key_t key;
+         TCOD_key_t key;
         TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS
         ,&key, NULL);
 
@@ -21,7 +30,19 @@ int main()
         }
 
         TCODConsole::root->clear();
+
+        for (int x = 0; x < cave.getWidth(); x++)
+        {
+            for (int y = 0; y < cave.getHeight(); y++)
+            {
+                TCODConsole::root->putChar(x, y, cave.at(x, y));
+
+            }
+        }
+
         TCODConsole::root->putChar(playerx, playery, '@');
+
+
         TCODConsole::flush();
     }
     return 0;
