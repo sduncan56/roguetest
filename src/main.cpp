@@ -35,7 +35,9 @@ int main()
         {
             for (int y = 0; y < cave.getHeight(); y++)
             {
-                TCODConsole::root->putChar(x, y, cave.at(x, y));
+                if (cave.at(x, y) == 'X')
+                    TCODConsole::root->setCharBackground(x, y, TCODColor::brass);
+                //TCODConsole::root->putChar(x, y, cave.at(x, y));
 
             }
         }
