@@ -54,8 +54,6 @@ Cave CaveGenerator::DoAutomataStep(Cave cave)
         {
             int count = CountWallsAroundPoint(cave, x, y);
 
-            std::cout << count << std::endl;
-
             if (cave.IsWall(x, y))
             {
                 if (count < removeWallThreshold)

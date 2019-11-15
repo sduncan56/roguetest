@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 
-Entity::Entity(int x, int y) {
+Entity::Entity() {
     SetPosition(x, y);  
 }
 

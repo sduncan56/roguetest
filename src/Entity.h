@@ -9,6 +9,7 @@ class Entity
 
     public:
         Entity(int x, int y);
+        Entity();
 
         void SetPosition(int x, int y);
         std::pair<int, int> GetPosition();

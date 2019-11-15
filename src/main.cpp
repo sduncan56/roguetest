@@ -3,20 +3,25 @@
 #include "Cave.h"
 #include "Entity.h"
 #include "MovementEngine.h"
+#include "PlacementEngine.h"
 
 
 int main()
 {
-    MovementEngine movementEngine = MovementEngine();
+    MovementEngine movementEngine;
+    PlacementEngine placementEngine;
 
+    Entity player = Entity();
 
-    Entity player = Entity(40, 25);
 
     TCODConsole::initRoot(80,55,"libtcod test", false);
 
 
     CaveGenerator caveGen = CaveGenerator();
     Cave cave = caveGen.Generate(50, 50);
+
+    placementEngine.PlaceInRandomSpace(&player, &cave);
+
 
     while(!TCODConsole::isWindowClosed())
     {
