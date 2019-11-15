@@ -1,11 +1,16 @@
 #include "libtcod/libtcod.hpp"
 #include "CaveGenerator.h"
 #include "Cave.h"
+#include "Entity.h"
+#include "MovementEngine.h"
 
 
 int main()
 {
-    int playerx=40, playery=25;
+    MovementEngine movementEngine = MovementEngine();
+
+
+    Entity player = Entity(40, 25);
 
     TCODConsole::initRoot(80,55,"libtcod test", false);
 
@@ -22,10 +27,18 @@ int main()
 
         switch(key.vk)
         {
-            case TCODK_UP: playery--; break;
-            case TCODK_DOWN: playery++; break;
-            case TCODK_LEFT: playerx--; break;
-            case TCODK_RIGHT: playerx++; break;
+            case TCODK_UP: 
+                movementEngine.Move(&player, 0, -1, &cave); 
+                break;
+            case TCODK_DOWN: 
+                movementEngine.Move(&player, 0, 1, &cave); 
+                break;
+            case TCODK_LEFT: 
+                movementEngine.Move(&player, -1, 0, &cave); 
+                break;
+            case TCODK_RIGHT: 
+                movementEngine.Move(&player, 1, 0, &cave); 
+                break;
             default: break;
         }
 
@@ -35,14 +48,16 @@ int main()
         {
             for (int y = 0; y < cave.getHeight(); y++)
             {
-                if (cave.at(x, y) == 'X')
+                if (cave.IsWall(x, y))
                     TCODConsole::root->setCharBackground(x, y, TCODColor::brass);
                 //TCODConsole::root->putChar(x, y, cave.at(x, y));
 
             }
         }
 
-        TCODConsole::root->putChar(playerx, playery, '@');
+        auto playerPos = player.GetPosition();
+
+        TCODConsole::root->putChar(playerPos.first, playerPos.second, '@');
 
 
         TCODConsole::flush();

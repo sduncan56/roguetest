@@ -6,7 +6,7 @@
 class Cave
 {
     private:
-        std::vector<char> _layout;
+        std::vector<bool> _layout;
 
         int max_width;
         int max_height;
@@ -15,13 +15,13 @@ class Cave
         Cave(int width, int height);
         Cave(const Cave&);
 
-        char at(int x, int y);
-        void set(int x, int y, char c);
+        bool IsWall(int x, int y);
+        void SetWall(int x, int y, bool isWall);
 
         int getWidth();
         int getHeight();
 
-        std::vector<char> getLayout();
+        std::vector<bool> getLayout();
         
 
 

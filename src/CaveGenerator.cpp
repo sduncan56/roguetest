@@ -30,10 +30,10 @@ Cave CaveGenerator::Generate(int width, int height)
         {
             if(rng->getInt(1, 10) > chanceToStartEmpty)
             {
-                cave.set(x, y, 'X');
+                cave.SetWall(x, y, true);
             }
             else
-                cave.set(x, y, ' ');          
+                cave.SetWall(x, y, false);          
         }
     }
 
@@ -43,9 +43,8 @@ Cave CaveGenerator::Generate(int width, int height)
     }
 
     return cave;
- 
 }
-Cave CaveGenerator::DoAutomataStep(Cave cave) 
+Cave CaveGenerator::DoAutomataStep(Cave cave)
 {
     Cave newCave = cave;
 
@@ -57,31 +56,25 @@ Cave CaveGenerator::DoAutomataStep(Cave cave)
 
             std::cout << count << std::endl;
 
-            if (cave.at(x, y) == 'X')
+            if (cave.IsWall(x, y))
             {
                 if (count < removeWallThreshold)
-                    newCave.set(x, y, ' ');
+                    newCave.SetWall(x, y, false);
                 else
-                    newCave.set(x, y, 'X');
-                
+                    newCave.SetWall(x, y, true);
             }
             else
             {
                 if (count > addWallThreshold)
-                    newCave.set(x, y, 'X');
+                    newCave.SetWall(x, y, true);
                 else
-                    newCave.set(x, y, ' ');
+                    newCave.SetWall(x, y, false);
             }
-            
+
             if (DEBUG_DRAW)
                 DebugDraw(newCave, x, y);
-
         }
-
-
     }
-
-
 
     return newCave;
 }
@@ -105,9 +98,8 @@ int CaveGenerator::CountWallsAroundPoint(Cave cave, int x, int y) {
                 continue;
             }
 
-            char curTile = cave.at(neighbourX, neighbourY);
 
-            if (curTile == 'X')
+            if (cave.IsWall(neighbourX, neighbourY))
                 count++;
         }
     }
@@ -138,7 +130,7 @@ void CaveGenerator::DebugDraw(Cave cave, int curX, int curY)
         for (int y = 0; y < cave.getHeight(); y++)
         {
 
-            if (cave.at(x, y) == 'X')
+            if (cave.IsWall(x, y))
                 TCODConsole::root->setCharBackground(x, y, TCODColor::darkestCyan);
             if (x == curX && y == curY)
             {

@@ -11,7 +11,7 @@ Cave::Cave(const Cave& old_cave) : max_width(old_cave.max_width), max_height(old
 
 }
 
-char Cave::at(int x, int y) {
+bool Cave::IsWall(int x, int y) {
 
     assert(x < max_width);
     assert(y < max_height);
@@ -20,17 +20,13 @@ char Cave::at(int x, int y) {
     return _layout[x * max_width + y];    
 } 
 
-void Cave::set(int x, int y, char c) {
+void Cave::SetWall(int x, int y, bool isWall) {
     assert(x < max_width);
     assert(y < max_height);
     assert(x * max_width + y < (int)_layout.size());
     
-    _layout[x * max_width + y] = c;
+    _layout[x * max_width + y] = isWall;
 }
-
-
-
-
 
 int Cave::getWidth() {
     return max_width;
@@ -40,7 +36,7 @@ int Cave::getHeight() {
     return max_height;
 }
 
-std::vector<char> Cave::getLayout()
+std::vector<bool> Cave::getLayout()
 {
     return _layout;
 }
