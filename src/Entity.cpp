@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include <assert.h>
 
 
 Entity::Entity() {
@@ -21,3 +22,7 @@ int Entity::GetX() {
 int Entity::GetY() {
     return y;
 }
+
+
+
+

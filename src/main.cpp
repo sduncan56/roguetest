@@ -4,6 +4,10 @@
 #include "Entity.h"
 #include "MovementEngine.h"
 #include "PlacementEngine.h"
+#include "DisplayComponent.h"
+
+#include <memory>
+#include <iostream>
 
 
 int main()
@@ -12,6 +16,12 @@ int main()
     PlacementEngine placementEngine;
 
     Entity player = Entity();
+
+    std::shared_ptr<DisplayComponent> playerDisplay = std::make_shared<DisplayComponent>('@');
+    
+    player.AddComponent(playerDisplay);
+
+    Entity enemy;
 
 
     TCODConsole::initRoot(80,55,"libtcod test", false);
@@ -61,8 +71,9 @@ int main()
         }
 
         auto playerPos = player.GetPosition();
+        auto dc = player.GetComponent<DisplayComponent>();
 
-        TCODConsole::root->putChar(playerPos.first, playerPos.second, '@');
+        TCODConsole::root->putChar(playerPos.first, playerPos.second, dc->DisplayChar);
 
 
         TCODConsole::flush();
