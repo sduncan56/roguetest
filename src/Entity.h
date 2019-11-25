@@ -5,6 +5,7 @@
 #include <map>
 #include <unordered_map>
 #include <memory>
+#include <assert.h>
 
 #include "Component.h"
 #include "DisplayComponent.h"
@@ -35,6 +36,7 @@ class Entity
             }
             else
             {
+                assert(false);
                 //we should never do this
                 return nullptr;
             }

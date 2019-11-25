@@ -9,5 +9,5 @@ class PlacementEngine
 
     public:
         PlacementEngine();
-        void PlaceInRandomSpace(Entity* entity, Cave* cave);
+        void PlaceInRandomSpace(Entity& entity, Cave& cave);
 };

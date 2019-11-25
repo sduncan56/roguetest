@@ -3,6 +3,31 @@
 
 #include <vector>
 
+struct Point
+{
+    int x;
+    int y;
+
+    Point() {}
+
+    Point(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+    }
+
+    Point(const Point& p)
+    {
+        this->x = p.x;
+        this->y = p.y;
+    }
+};
+
+bool operator==(const Point &lhs, const Point &rhs)
+{
+    return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
 class Cave
 {
     private:

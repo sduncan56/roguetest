@@ -5,6 +5,7 @@
 #include "MovementEngine.h"
 #include "PlacementEngine.h"
 #include "DisplayComponent.h"
+#include "EnemyEngine.h"
 
 #include <memory>
 #include <iostream>
@@ -14,6 +15,7 @@ int main()
 {
     MovementEngine movementEngine;
     PlacementEngine placementEngine;
+    EnemyEngine enemyEngine;
 
     Entity player = Entity();
 
@@ -22,6 +24,7 @@ int main()
     player.AddComponent(playerDisplay);
 
     Entity enemy;
+    enemy.AddComponent(std::make_shared<DisplayComponent>('g'));
 
 
     TCODConsole::initRoot(80,55,"libtcod test", false);
@@ -30,7 +33,8 @@ int main()
     CaveGenerator caveGen = CaveGenerator();
     Cave cave = caveGen.Generate(50, 50);
 
-    placementEngine.PlaceInRandomSpace(&player, &cave);
+    placementEngine.PlaceInRandomSpace(player, cave);
+    placementEngine.PlaceInRandomSpace(enemy, cave);
 
 
     while(!TCODConsole::isWindowClosed())
@@ -74,6 +78,7 @@ int main()
         auto dc = player.GetComponent<DisplayComponent>();
 
         TCODConsole::root->putChar(playerPos.first, playerPos.second, dc->DisplayChar);
+        TCODConsole::root->putChar(enemy.GetX(), enemy.GetY(), enemy.GetComponent<DisplayComponent>()->DisplayChar);
 
 
         TCODConsole::flush();
