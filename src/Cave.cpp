@@ -41,3 +41,11 @@ std::vector<bool> Cave::getLayout()
     return _layout;
 }
 
+
+bool Cave::IsWalkable(int x, int y) {
+    if (x < 0 || x > max_width ||
+        y < 0 || y > max_height)
+            return false;
+
+    return !IsWall(x, y);    
+}

@@ -23,7 +23,7 @@ struct Point
     }
 };
 
-bool operator==(const Point &lhs, const Point &rhs)
+inline bool operator==(const Point &lhs, const Point &rhs)
 {
     return lhs.x == rhs.x && lhs.y == rhs.y;
 }
@@ -42,6 +42,8 @@ class Cave
 
         bool IsWall(int x, int y);
         void SetWall(int x, int y, bool isWall);
+
+        bool IsWalkable(int x, int y);
 
         int getWidth();
         int getHeight();
