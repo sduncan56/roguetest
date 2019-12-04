@@ -8,7 +8,7 @@
 TEST_CASE("Finds path", "[findspath]")
 {
     int width = 11;
-    int height = 8;
+    int height = 11;
     Cave cave = Cave(width, height);
     const char* text = "11111111111"
                        "10001111111"
@@ -18,17 +18,19 @@ TEST_CASE("Finds path", "[findspath]")
                        "11101111011"
                        "11100011011"
                        "11111011001"
+                       "11111111111"
+                       "11111111111"
                        "11111111111";
 
     for (int x = 0; x < width; x++)
     {
         for (int y = 0; y < height; y++)
         {
-            cave.SetWall(x, y, static_cast<bool>(text+(x*width+y)));
+            cave.SetWall(x, y, (*(text + (x * width + y)) != '0'));
         }
     }
 
-    PathfindingEngine pathfinding;
+    // PathfindingEngine pathfinding;
 
     Point start = Point(1,1);
     Point end = Point(4,3);

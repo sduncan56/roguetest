@@ -22,7 +22,9 @@
             },
             "problemMatcher": {
                 "owner": "cpp",
-                "fileLocation": ["absolute"],
+                "fileLocation": [
+                    "absolute"
+                ],
                 "pattern": {
                     "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
                     "file": 1,
@@ -32,7 +34,12 @@
                     "message": 5
                 }
             }
-
+        },
+        {
+            "label": "build tests",
+            "type": "shell",
+            "command": "g++ src/*.cpp -o test -D UNIT_TESTING -Iinclude -L. -ltcod -Wl,-rpath=. -g -Wall",
+            "group": "build",      
         }
     ]
 }

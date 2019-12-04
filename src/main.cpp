@@ -10,7 +10,7 @@
 #include <memory>
 #include <iostream>
 
-
+#ifndef UNIT_TESTING
 int main()
 {
     MovementEngine movementEngine;
@@ -85,3 +85,4 @@ int main()
     }
     return 0;
 }
+#endif
