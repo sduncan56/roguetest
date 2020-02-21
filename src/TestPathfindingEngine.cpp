@@ -1,16 +1,21 @@
 
+#ifdef UNIT_TESTING
 #define CATCH_CONFIG_MAIN
+#endif
 #include "extern/catch.hpp"
+#include <iostream>
 
 #include "PathfindingEngine.h"
 #include "Cave.h"
 
-TEST_CASE("Finds path", "[findspath]")
+#define DEBUG_DRAW false
+
+
+namespace PathfindingTests
 {
-    int width = 11;
-    int height = 11;
-    Cave cave = Cave(width, height);
-    const char* text = "11111111111"
+    const int size = 11;
+    const char *narrowmap = 
+                       "11111111111"
                        "10001111111"
                        "10000000111"
                        "11101110111"
@@ -22,21 +27,143 @@ TEST_CASE("Finds path", "[findspath]")
                        "11111111111"
                        "11111111111";
 
-    for (int x = 0; x < width; x++)
+    const char* openmap =
+                      "00100000000"
+                      "00110101000"
+                      "00001001000"
+                      "00000001000"
+                      "00001111110"
+                      "00010000000"
+                      "00010011000"
+                      "00001000100"
+                      "00000100010"
+                      "00010011110"
+                      "00010000000"
+                      "00100000000";
+
+
+    Cave* LoadCaveFromText(const char* text)
     {
-        for (int y = 0; y < height; y++)
+        Cave* cave = new Cave(size, size);
+
+        for (int y = 0; y < size; y++)
         {
-            cave.SetWall(x, y, (*(text + (x * width + y)) != '0'));
+            for (int x = 0; x < size; x++)
+            {
+                cave->SetWall(x, y, (*(text + (y * size + x)) != '0'));
+            }
         }
+
+        return cave;
     }
 
-    // PathfindingEngine pathfinding;
+    void debugDraw(Cave* cave, std::stack<Point*>& path, Point& start, Point& end)
+    {
+       std::vector<std::vector<char> > drawMap; 
 
-    Point start = Point(1,1);
-    Point end = Point(4,3);
+        for (int i = 0; i < cave->getWidth(); i++)
+        {
+            std::vector<char> v;
+            
+            for (int j = 0; j < cave->getHeight(); j++)
+            {
+                v.push_back(cave->IsWall(j, i) ? 'X' : 'O');
+            }
+            drawMap.push_back(v);
+        }
 
-    REQUIRE(cave.IsWalkable(start.x, start.y));
-    REQUIRE(cave.IsWalkable(end.x, end.y));
+        while (!path.empty())
+        {
+            Point* p = path.top();
+            path.pop();
+            
+            REQUIRE(cave->IsWalkable(p->x, p->y));
 
-    //pathfinding.FindPathTo()
-}
+            drawMap[p->y][p->x] = 'P';
+            delete p;
+        }
+        drawMap[start.y][start.x] = 'S';
+        drawMap[end.y][end.x] = 'E';
+
+        for (int i = 0; i < cave->getWidth(); i++)
+        {            
+            for (int j = 0; j < cave->getHeight(); j++)
+            {
+                std::cout << drawMap[i][j];
+            }
+            std::cout << std::endl;
+        }
+  
+    }
+    void checkWalkable(std::stack<Point*> path, Cave* cave)
+    {
+        Point* current = path.top();
+        while (!path.empty())
+        {
+            REQUIRE(cave->IsWalkable(current->x, current->y));
+            Point* del = current;
+            path.pop();
+            if (path.empty())
+                break;
+
+            current = path.top();
+
+            delete del;
+
+        }
+        delete cave;
+    }
+
+
+    TEST_CASE("Complex Map", "[findspath]")
+    {
+        Cave* cave = LoadCaveFromText(openmap);
+
+        PathfindingEngine pathfinding;
+        Point start = Point(3, 0);
+        Point end = Point(3, 8);
+
+        REQUIRE(cave->IsWalkable(start.x, start.y));
+        REQUIRE(cave->IsWalkable(end.x, end.y));
+
+
+        std::stack<Point *> path = pathfinding.FindPathTo(start, end, *cave);
+
+        REQUIRE(path.size() == 16);
+
+        #if DEBUG_DRAW
+        debugDraw(cave, path, start, end);
+        #else
+        checkWalkable(path, cave);
+        #endif
+
+    }
+
+    TEST_CASE("Finds path", "[findspath]")
+    {
+        Cave* cave = LoadCaveFromText(narrowmap); 
+
+        PathfindingEngine pathfinding;
+
+        Point start = Point(1, 1);
+        Point end = Point(5, 7);
+
+        REQUIRE(cave->IsWalkable(start.x, start.y));
+        REQUIRE(cave->IsWalkable(end.x, end.y));
+
+        std::stack<Point *> path = pathfinding.FindPathTo(start, end, *cave);
+
+        REQUIRE(!path.empty());
+        REQUIRE(path.size() == 10);
+
+        Point *current = path.top();
+
+        REQUIRE(*current != start);
+
+        checkWalkable(path, cave);
+
+
+        
+    }
+} // namespace PathfindingTests
+

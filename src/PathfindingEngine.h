@@ -3,6 +3,8 @@
 #include <queue>
 #include <vector>
 #include <stack>
+#include <map>
+#include <tuple>
 
 #include "Cave.h"
 
@@ -23,20 +25,26 @@ struct PFNode : Point
         this->x = x;
         this->y = y;
     }
+    
 };
 
-inline bool operator<(const PFNode& lhs, const PFNode& rhs)
+struct Comp
 {
-    return lhs.priority < rhs.priority;
-}
-
+    bool operator()(const PFNode *lhs, const PFNode *rhs)
+    {
+        return lhs->priority > rhs->priority;
+    }
+};
 
 class PathfindingEngine
 {
     private:
+        std::map<std::tuple<int, int>, PFNode*> existingNodes;
 
     public:
         PathfindingEngine();
+        PFNode* GetExit(int x, int y);
+        void CalculateExits(Cave* cave, PFNode* node);
         std::stack<Point*> FindPathTo(Point start, Point goal, Cave& cave);
         
 

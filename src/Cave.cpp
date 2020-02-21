@@ -12,9 +12,9 @@ Cave::Cave(const Cave& old_cave) : max_width(old_cave.max_width), max_height(old
 }
 
 bool Cave::IsWall(int x, int y) {
+    if (x >= max_width) return true;
+    if (y >= max_height) return true;
 
-    assert(x < max_width);
-    assert(y < max_height);
     assert(x * max_width + y < (int)_layout.size());
 
     return _layout[x * max_width + y];    
