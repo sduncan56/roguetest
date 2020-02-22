@@ -40,11 +40,12 @@ class PathfindingEngine
 {
     private:
         std::map<std::tuple<int, int>, PFNode*> existingNodes;
+        PFNode* GetExit(int x, int y);
+        void CalculateExits(Cave* cave, PFNode* node);
+
 
     public:
         PathfindingEngine();
-        PFNode* GetExit(int x, int y);
-        void CalculateExits(Cave* cave, PFNode* node);
         std::stack<Point*> FindPathTo(Point start, Point goal, Cave& cave);
         
 

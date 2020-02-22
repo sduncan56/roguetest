@@ -1,7 +1,7 @@
 
-#ifdef UNIT_TESTING
+#ifdef UNIT_TESTING //this sucks and we should write a makefile to exclude tests from build
 #define CATCH_CONFIG_MAIN
-#endif
+
 #include "extern/catch.hpp"
 #include <iostream>
 
@@ -44,6 +44,7 @@ namespace PathfindingTests
 
     Cave* LoadCaveFromText(const char* text)
     {
+        REQUIRE(true);
         Cave* cave = new Cave(size, size);
 
         for (int y = 0; y < size; y++)
@@ -167,3 +168,4 @@ namespace PathfindingTests
     }
 } // namespace PathfindingTests
 
+#endif

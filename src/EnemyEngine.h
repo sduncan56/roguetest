@@ -10,6 +10,7 @@ class EnemyEngine
 
     public:
         EnemyEngine();
+        void ConsiderStrategy(Entity& enemy, Cave& cave);
         Point FindRandomFreeSpace(Entity& enemy, Cave& cave, StrategyComponent& strategyComponent);
         void ConsiderMove(Entity& enemy, Cave& cave);
 };

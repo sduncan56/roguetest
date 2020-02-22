@@ -9,6 +9,7 @@
 
 #include "Component.h"
 #include "DisplayComponent.h"
+#include "Cave.h"
 
 class Entity
 {
@@ -43,9 +44,10 @@ class Entity
         }
 
         void SetPosition(int x, int y);
-        std::pair<int, int> GetPosition();
+        Point GetPosition();
         int GetX();
         int GetY();
+
 
 
 };

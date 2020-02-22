@@ -11,5 +11,6 @@ class MovementEngine
 
     public:
         MovementEngine();
+        bool Move(Entity* entity, Point* tile, Cave* cave);
         bool Move(Entity* entity, int vectorX, int vectorY, Cave* cave);
 };

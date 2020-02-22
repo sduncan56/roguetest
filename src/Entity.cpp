@@ -11,8 +11,8 @@ void Entity::SetPosition(int x, int y) {
     this->y = y;     
 }
 
-std::pair<int, int> Entity::GetPosition() {
-    return std::pair<int, int>(x, y);
+Point Entity::GetPosition() {
+    return Point(x, y);
 }
 
 int Entity::GetX() {
@@ -22,6 +22,7 @@ int Entity::GetX() {
 int Entity::GetY() {
     return y;
 }
+
 
 
 

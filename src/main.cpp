@@ -25,6 +25,7 @@ int main()
 
     Entity enemy;
     enemy.AddComponent(std::make_shared<DisplayComponent>('g'));
+    enemy.AddComponent(std::make_shared<StrategyComponent>());
 
 
     TCODConsole::initRoot(80,55,"libtcod test", false);
@@ -77,7 +78,22 @@ int main()
         auto playerPos = player.GetPosition();
         auto dc = player.GetComponent<DisplayComponent>();
 
-        TCODConsole::root->putChar(playerPos.first, playerPos.second, dc->DisplayChar);
+        enemyEngine.ConsiderStrategy(enemy, cave);
+
+        auto enemyStrategyComponent = enemy.GetComponent<StrategyComponent>();
+        if (enemyStrategyComponent->HasGoal && !enemyStrategyComponent->Path.empty())
+        {
+            auto next = enemyStrategyComponent->Path.top();
+
+            movementEngine.Move(&enemy, next, &cave);
+
+            enemyStrategyComponent->Path.pop();
+            delete next;
+
+        }
+        
+
+        TCODConsole::root->putChar(playerPos.x, playerPos.y, dc->DisplayChar);
         TCODConsole::root->putChar(enemy.GetX(), enemy.GetY(), enemy.GetComponent<DisplayComponent>()->DisplayChar);
 
 

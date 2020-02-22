@@ -4,7 +4,23 @@
 
 
 #include "StrategyComponent.h"
+#include "PathfindingEngine.h"
 
+void EnemyEngine::ConsiderStrategy(Entity& enemy, Cave& cave) {
+    auto strategyComponent = enemy.GetComponent<StrategyComponent>();
+
+    if (!strategyComponent->HasGoal || enemy.GetPosition() == strategyComponent->Goal)
+    {
+        strategyComponent->HasGoal = false;
+        while (!strategyComponent->HasGoal)
+            ConsiderMove(enemy, cave);
+    }
+    else
+    {
+        
+    }
+    
+}
 
 void EnemyEngine::ConsiderMove(Entity& enemy, Cave& cave) {
     auto strategyComponent = enemy.GetComponent<StrategyComponent>();
@@ -13,9 +29,13 @@ void EnemyEngine::ConsiderMove(Entity& enemy, Cave& cave) {
     {
         case Strategies::random:
         {
-            Point goal = FindRandomFreeSpace(enemy, cave, *strategyComponent);
-            strategyComponent->GoalX = goal.x;
-            strategyComponent->GoalY = goal.y;
+            strategyComponent->Goal  = FindRandomFreeSpace(enemy, cave, *strategyComponent);
+            strategyComponent->HasGoal = true;
+
+            PathfindingEngine pfEngine;
+            strategyComponent->Path = pfEngine.FindPathTo(enemy.GetPosition(), strategyComponent->Goal, cave);
+            if (strategyComponent->Path.empty())
+                strategyComponent->HasGoal = false;
 
             break;
         }
@@ -48,3 +68,5 @@ Point EnemyEngine::FindRandomFreeSpace(Entity& enemy, Cave& cave, StrategyCompon
     Point p = Point{goalX, goalY};
     return p;
 }
+
+

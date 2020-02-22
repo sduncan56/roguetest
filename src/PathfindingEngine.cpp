@@ -60,11 +60,8 @@ std::stack<Point*> PathfindingEngine::FindPathTo(Point start, Point goal, Cave& 
 
         CalculateExits(&cave, current);
 
-        printf("Current node: x: %d y: %d\n", current->x, current->y);
-        printf("currently exploring:\n");
         for (PFNode* next : current->Exits)
         {
-            printf("x: %d y: %d\n", next->x, next->y);
             int newCost = costSoFar[current] + next->cost;
             if (!costSoFar.count(next) || newCost < costSoFar[next])
             {
@@ -73,9 +70,7 @@ std::stack<Point*> PathfindingEngine::FindPathTo(Point start, Point goal, Cave& 
                 frontier.push(next);
                 cameFrom[next] = current;
             }
-        }
-        printf("continuing...\n");
-              
+        }              
     }
 
     std::stack<Point*> path;
